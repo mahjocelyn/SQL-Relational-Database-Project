@@ -1,0 +1,74 @@
+--Insert data into look up tables
+
+INSERT INTO tblCOLOR (ColorName)
+VALUES('Red'), ('Orange'), ('Yellow'), ('Green'), ('Blue'), ('Purple'), ('White'), ('Black'), ('Pink'), ('Brown'), ('Gray')
+
+INSERT INTO tblSIZE (SizeName, SizeDescr)
+VALUES ('XS', 'Extra Small'), ('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'Extra Large'), ('2XL', 'Double Large or Extra, Extra Large'), ('3XL', 'Triple Large')
+
+INSERT INTO tblSUPPLIER (CompanyName, SupplierCity, SupplierState, SupplierZipCode)
+VALUES('Ringo Fabric', 'Seattle', 'Washington, WA', '98108'), 
+('Buy Time', 'Los Angeles', 'California, CA', '90026'), 
+('CatWalk Wholesale', 'Houston', 'Texas, TX', '77002'), 
+('P&G Wholesale', 'Orlando', 'Florida, FL', '32803'),
+('C&C Mart', 'New York City', 'New York, NY', '10001')
+
+INSERT INTO tblPHONE_TYPE (PhoneName, PhoneDescr)
+VALUES ('Office', 'main phone line'), 
+('Work','most convenient'), 
+('Home', 'will return next day'), 
+('Fax', 'convenient'), 
+('Mobile', 'convenient')
+
+INSERT INTO tblROLE (RoleName, RoleDescr)
+VALUES ('Manager', 'mangage overall operations'),
+('Marketing Staff', 'connect with customers'),
+('CS Representative', 'answer questions for customers'),
+('Manufacturer', 'produce goods for customers'),
+('Director', 'oversee the entire business operations')
+
+INSERT INTO tblCUSTOMER (CustomerFName, CustomerLName, CustomerEmail, CustomerDoB)
+VALUES ('Haile','barajas','hailebarajas01@gmail.com','11/01/1991'),
+('Cara','Priest','carapriest02@gmail.com','03/06/1983'),
+('Charie','Maes','chariemaes03@gmail.com','03/12/1979'),
+('March','Robb','marchrobb04@gmail.com','12/08/1977'),
+('Ama','Hanlon','amahanlon05@gmail.com','10/05/1990'),
+('Rachel', 'Li', 'Rachel@gmail.com', '05/01/1992'),
+('Sam', 'Lam', 'samlam@gmail.com', '05/01/1998'),
+('Sara', 'Su', 'Sara@gmail.com', '07/01/1997'),
+('Susan', 'Su', 'Susan@gmail.com', '07/01/1977'),
+('Lisa', 'Wong', 'Lisaa@gmail.com', '07/01/1957')
+
+INSERT INTO tblPRODUCT_CATEGORY (ProductCategoryName, ProductCategoryDescr)
+VALUES ('Apparel','Clothing for women, men and children'),
+('Sportswear','Clothing for physical activites'),
+('Formal Wear','Evening cloth'),
+('Accessories','Items that contribute to clothing'),
+('Jewelry','A category of accessory')
+
+INSERT INTO tblGENDER(GENDER)
+VALUES ('Male'),('Female'),('Others')
+​
+INSERT INTO tblDEPARTMENT(DepartmentName, DepartmentDescr)
+VALUES('Marketing','Promote company to the market'),
+('Sales','Supervisors and Sales Managers'),
+('IT','Internal Technology Support Department'),
+('Finance','Manage company financial informtation'),
+('Product','Manage product design'),('Warehouse','Manage company stocks'),
+('Management','Manage company operations')
+
+INSERT INTO tblPOSITION_TYPE(PositionTypeName,PositionTypeDescr)
+VALUES('Full time','The employee works 40 hours or more per week.'),
+('Part time ','The employee works less than 40 hours per week.'),
+('Elected','The employee fills an elected position.'),
+('Season','The employee is employed to work a seasonal position.'),
+('Volunteer','The employee fills an unpaid position.'),
+('Appointed','The employee is appointed to the position.'),
+('Temporary','The employee fills a temporary position.')
+
+INSERT INTO tblLOCATION(LocationName,LocationDescr)
+VALUES('Downtown Manhattan','NYC Flagship Store'),
+('Downtown Bellevue','Fancy store in BellevueSquare'),
+('Downtown Seattle','Wahsington Flagship Store'),
+('Downtown San Francisco','California Flagship Store'),
+('Downtown Portland','Oregon Flagship Store')
