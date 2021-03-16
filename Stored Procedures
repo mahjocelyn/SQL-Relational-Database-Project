@@ -1,0 +1,701 @@
+-- Stored Procedures (SP) to populate transactional tables
+
+--- SP for insert into tblCUSTOMER_PHONE
+Create PROCEDURE sp_InsertCustomerPhone
+@ACode  INT,
+@PNumber varchar(22),
+@CFName varchar (20),
+@CLName varchar (20)
+AS
+DECLARE @C_ID INT
+
+SET @C_ID = (SELECT CustomerID FROM tblCUSTOMER WHERE CustomerFName = @CFName AND CustomerLName = @CLName)
+
+BEGIN TRAN G1
+INSERT INTO tblCUSTOMER_PHONE (AreaCode, PhoneNumber, CustomerID)
+VALUES (@ACode, @PNumber, @C_ID)
+
+COMMIT TRAN G1
+GO
+
+--executed successfully
+EXEC sp_InsertCustomerPhone
+@ACode = 1,
+@PNumber = '5032641141',
+@CFName = 'Haile',
+@CLName = 'Barajas'
+
+EXEC sp_InsertCustomerPhone
+@ACode = 1,
+@PNumber = '4582006291',
+@CFName = 'Cara',
+@CLName = 'Priest'
+
+EXEC sp_InsertCustomerPhone
+@ACode = 1,
+@PNumber = '2063006286',
+@CFName = 'Charie',
+@CLName = 'Maes'
+
+EXEC sp_InsertCustomerPhone
+@ACode = 1,
+@PNumber = '2066236227',
+@CFName = 'Ama',
+@CLName = 'Hanlon'
+
+-----SP to INSERT tblPRODUCT 
+CREATE PROCEDURE sp_InsertProduct
+@UPrice NUMERIC (5,2), 
+@SKU Varchar (20),
+@PName Varchar (20),
+@PCategoryName Varchar (30)
+AS
+DECLARE @PC_ID INT
+
+SET @PC_ID = (SELECT ProductCategoryID FROM tblPRODUCT_CATEGORY WHERE ProductCategoryName = @PCategoryName)
+
+BEGIN TRAN G1
+INSERT INTO tblPRODUCT (UnitPrice, SKU, ProductName, ProductCategoryID)
+VALUES (@UPrice, @SKU, @PName, @PC_ID)
+
+COMMIT TRAN G1
+GO
+
+EXEC sp_InsertProduct
+@UPrice = 50.45,
+@SKU = '84625694',
+@PName = 'Print Faux Fur Coat',
+@PCategoryName = 'Apparel'
+
+EXEC sp_InsertProduct
+@UPrice = 89.89,
+@SKU = '84614874',
+@PName = 'Acorn Sportswear',
+@PCategoryName = 'Sportswear'
+
+EXEC sp_InsertProduct
+@UPrice = 19.99,
+@SKU = '84614834',
+@PName = 'Pineapple Earrings',
+@PCategoryName = 'Jewelry'
+
+EXEC sp_InsertProduct
+@UPrice = 9.99,
+@SKU = '84614888',
+@PName = 'Fake Diamond Ring',
+@PCategoryName = 'Jewelry'
+
+EXEC sp_InsertProduct
+@UPrice = 399.99,
+@SKU = '84614886',
+@PName = 'Black Tuxedo Jacket',
+@PCategoryName = 'Formal Wear'
+
+EXEC sp_InsertProduct
+@UPrice = 49.99,
+@SKU = '84614836',
+@PName = 'Rain Jacket',
+@PCategoryName = 'Apparel'
+
+EXEC sp_InsertProduct
+@UPrice = 79.99,
+@SKU = '84614843',
+@PName = 'Ski Jacket',
+@PCategoryName = 'Apparel'
+
+-- SP to insert tblEmployee
+CREATE PROCEDURE sp_INSERTEMPLOYEE
+@Gender varchar (20),
+@EFN VARCHAR (20),
+@ELN VARCHAR (20),
+@EC VARCHAR (50),
+@ES VARCHAR (50),
+@EZP INT,
+@DOB DATE,
+@HD DATE
+AS
+DECLARE @Gen_ID INT
+​
+SET @Gen_ID = (SELECT GenderID from tblGENDER WHERE Gender = @Gender)
+​
+BEGIN TRAN G1
+INSERT INTO tblEmployee (GenderID, EmployeeFName, EmployeeLName, EmployeeCity, EmployeeState, EmployeeZipCode, DateOfBirth, HiredDate)
+VALUES (@Gen_ID,@EFN,@ELN,@EC,@ES,@EZP,@DOB,@HD)
+
+COMMIT TRAN G1
+
+EXEC sp_INSERTEMPLOYEE
+@Gender = Male,
+@EFN = 'John',
+@ELN = 'Smith',
+@EC = 'Bellevue',
+@ES = 'Washington, WA',
+@EZP = 98004,
+@DOB = '03/21/1995',
+@HD = '12/01/2020'
+
+EXEC sp_INSERTEMPLOYEE
+@Gender = Female,
+@EFN = 'Abbie',
+@ELN = 'Smith',
+@EC = 'Bellevue',
+@ES = 'Washington, WA',
+@EZP = 98004,
+@DOB = '09/01/1996',
+@HD = '12/01/2020'
+
+EXEC sp_INSERTEMPLOYEE
+@Gender = Female,
+@EFN = 'Joyce',
+@ELN = 'Young',
+@EC = 'Bellevue',
+@ES = 'Washington, WA',
+@EZP = 98004,
+@DOB = '09/01/1975',
+@HD = '02/01/2015'
+
+EXEC sp_INSERTEMPLOYEE
+@Gender = Male,
+@EFN = 'Peter',
+@ELN = 'Lam',
+@EC = 'Seattle',
+@ES = 'Washington, WA',
+@EZP = 98101,
+@DOB = '05/21/1985',
+@HD = '05/01/2020'
+
+EXEC sp_INSERTEMPLOYEE
+@Gender = Female,
+@EFN = 'Kelly',
+@ELN = 'Johnson',
+@EC = 'Seattle',
+@ES = 'Washington, WA',
+@EZP = 98101,
+@DOB = '07/21/1987',
+@HD = '05/01/2019'
+
+-- SP to Insert tblBranches 
+CREATE PROCEDURE sp_InsertBranches
+@LocName VARCHAR(20),
+@BranCity VARCHAR(50),
+@BranState VARCHAR(50),
+@BranZC INT
+AS
+DECLARE @Loc_ID INT
+​
+SET @Loc_ID = (SELECT LOCATIONID FROM tblLOCATION WHERE LocationName = @LocName)
+​
+BEGIN TRAN G1
+INSERT INTO tblBRANCHES(LocationID, BranchCity, BranchState, BranchZipCode)
+VALUES(@Loc_ID, @BranCity, @BranState, @BranZC)
+​
+Commit TRAN G1
+​
+exec sp_InsertBranches
+@LocName = 'Downtown Bellevue',
+@BranCity = 'Bellevue',
+@BranState = 'Washington, WA',
+@BranZC =98004
+
+exec sp_InsertBranches
+@LocName = 'Downtown Seattle',
+@BranCity = 'Seattle',
+@BranState = 'Washington, WA',
+@BranZC =98101
+
+exec sp_InsertBranches
+@LocName = 'Downtown Manhattan ',
+@BranCity = 'New York',
+@BranState = 'New York, NY',
+@BranZC =10002
+
+exec sp_InsertBranches
+@LocName = 'Downtown Portland',
+@BranCity = 'Portland',
+@BranState = 'Oregon, OR',
+@BranZC =97205
+
+
+--SP to Insert tblJob
+CREATE PROCEDURE sp_InsertJob
+@EFN VARCHAR(20),
+@ELN VARCHAR (20),
+@PN VARCHAR(30),
+@BranCity VARCHAR(20),
+@DepName VARCHAR(50),
+@BeginDate Date,
+@EndDate Date,
+@Salaries NUMERIC(9,2)
+AS
+DECLARE @EMP_ID INT, @P_ID INT, @Bran_ID INT, @DEP_ID INT
+​
+SET @EMP_ID = (SELECT EMPLOYEEID FROM tblEMPLOYEE WHERE EmployeeFName = @EFN AND EmployeeLName = @ELN)
+SET @P_ID = (SELECT POSITIONID FROM tblPOSITION WHERE PositionName = @PN)
+SET @Bran_ID = (SELECT BRANCHID FROM tblBRANCHES WHERE BranchCity = @BranCity)
+SET @DEP_ID = (SELECT DEPARTMENTID FROM tblDEPARTMENT WHERE DepartmentName = @DepName)
+​
+BEGIN TRAN G1
+INSERT INTO tblJOB(EMPLOYEEID,PositionID,BranchID,DepartmentID,BeginDate,EndDate,Salaries)
+VALUES(@EMP_ID,@P_ID,@Bran_ID,@DEP_ID,@BeginDate,@EndDate,@Salaries)
+​
+COMMIT TRAN G1
+​
+---------------------------
+EXEC sp_InsertJob
+@EFN = 'John',
+@ELN= 'Smith',
+@PN = 'Regional Manager',
+@BranCity = 'Bellevue',
+@DepName = 'Management',
+@BeginDate = '2020-12-01',
+@EndDate = '',
+@Salaries = 799999.75
+
+EXEC sp_InsertJob
+@EFN = 'Peter',
+@ELN= 'Lam',
+@PN = 'Sales Representative',
+@BranCity = 'Seattle',
+@DepName = 'Sales',
+@BeginDate = '2020-05-01',
+@EndDate = '',
+@Salaries = 50999.75
+
+
+EXEC sp_InsertJob
+@EFN = 'Joyce',
+@ELN= 'Young',
+@PN = 'Marketing Director',
+@BranCity = 'Bellevue',
+@DepName = 'Marketing',
+@BeginDate = '2015-02-01',
+@EndDate = '',
+@Salaries = 250999.75
+
+--SP to insert tblCONTACT 
+CREATE PROCEDURE sp_InsertCONTACT
+@CFName varchar (20),
+@CLName varchar (20),
+@CEmail varchar (50),
+@CompName varchar(40),
+@RName varchar (40)
+AS
+
+DECLARE @S_ID INT, @R_ID INT
+
+SET @S_ID = (SELECT SupplierID from tblSUPPLIER WHERE CompanyName = @CompName)
+SET @R_ID = (SELECT RoleID from tblROLE WHERE RoleName = @RName)
+
+BEGIN TRAN G1
+INSERT INTO tblCONTACT (RoleID, SupplierID, ContactFName, ContactLName, ContactEmail)
+VALUES (@R_ID,@S_ID, @CFName, @CLName, @CEmail)
+
+COMMIT TRAN G1
+
+
+EXEC sp_InsertCONTACT
+@CFName = 'Jamie',
+@CLName = 'Lawson',
+@CEmail = 'jamiel2@gmail.com',
+@CompName = 'L&L',
+@RName = 'Manager'
+
+
+--SP to insert tblSUPPLIER_PHONE 
+CREATE PROCEDURE sp_InsertSUPPLIER_PHONE
+@PName varchar (20),
+@AreaC INT,
+@PNum VARCHAR(22),
+@PDesc varchar (255),
+@Ph_Name varchar (20),
+@CFName varchar (20),
+@CLName varchar (20)
+AS
+DECLARE @PT_ID INT, @Contact_ID INT
+
+SET @PT_ID = (SELECT PhoneTypeID from tblPHONE_TYPE WHERE PhoneName = @Ph_Name)
+SET @Contact_ID = (SELECT ContactID from tblCONTACT WHERE ContactFName = @CFName AND ContactLName = @CLName)
+
+BEGIN TRAN G1
+INSERT INTO tblSUPPLIER_PHONE (PhoneTypeID, ContactID, PhoneName, AreaCode, PhoneNumber, PhoneDescr)
+VALUES (@PT_ID, @Contact_ID, @PName, @AreaC, @PNum, @PDesc)
+COMMIT TRAN G1
+
+EXEC sp_InsertSUPPLIER_PHONE
+@PName = 'Office',
+@AreaC = 1,
+@PNum = '206-456-7452',
+@PDesc = 'main contact',
+@Ph_Name = 'office',
+@CFName = 'Jamie',
+@CLName = 'Lawson'
+
+
+---SP to insert tblPRODUCT_Size
+CREATE PROCEDURE sp_InsertProductSize
+@P_Name varchar (20),
+@S_Name VARCHAR (20)
+AS 
+DECLARE @P_ID INT, @S_ID INT
+
+SET @P_ID = (SELECT ProductID from tblPRODUCT WHERE ProductName = @P_Name)
+SET @S_ID = (SELECT SizeID from tblSIZE WHERE SizeName = @S_Name)
+
+BEGIN TRAN G1
+INSERT INTO tblPRODUCT_Size (ProductID, SizeID)
+VALUES (@P_ID, @S_ID)
+
+COMMIT TRAN G1
+
+exec sp_InsertProductSize
+@P_Name = 'Black Tuxedo Jacket' ,
+@S_Name = 'S'
+
+exec sp_InsertProductSize
+@P_Name = 'Black Tuxedo Jacket' ,
+@S_Name = 'M'
+
+exec sp_InsertProductSize
+@P_Name = 'Black Tuxedo Jacket' ,
+@S_Name = 'L'
+
+exec sp_InsertProductSize
+@P_Name = 'Black Tuxedo Jacket' ,
+@S_Name = 'XL'
+
+exec sp_InsertProductSize
+@P_Name = 'Acorn Sportswear' ,
+@S_Name = 'XS'
+
+exec sp_InsertProductSize
+@P_Name = 'Acorn Sportswear' ,
+@S_Name = 'S'
+
+exec sp_InsertProductSize
+@P_Name = 'Acorn Sportswear' ,
+@S_Name = 'M'
+
+exec sp_InsertProductSize
+@P_Name = 'Acorn Sportswear' ,
+@S_Name = 'L'
+
+---Stored Procedure to insert tblPRODUCT_COLOR 
+CREATE PROCEDURE sp_InsertProductColor
+@ProName varchar (20),
+@ColName VARCHAR (20)
+AS DECLARE @ProID INT, @ColID INT
+
+SET @ProID = (SELECT ProductID from tblPRODUCT WHERE ProductName = @ProName)
+SET @ColID = (SELECT ColorID from tblCOLOR WHERE ColorName = @ColName)
+
+BEGIN TRAN G1
+INSERT INTO tblPRODUCT_COLOR (ProductID, ColorID)
+VALUES (@ProID, @ColID)
+
+COMMIT TRAN G1
+
+exec sp_InsertProductColor
+@ProName = 'Acorn Sportswear',
+@ColName = 'White'
+
+exec sp_InsertProductColor
+@ProName = 'Acorn Sportswear',
+@ColName = 'Red'
+
+exec sp_InsertProductColor
+@ProName = 'Acorn Sportswear',
+@ColName = 'Black'
+
+exec sp_InsertProductColor
+@ProName = 'Acorn Sportswear',
+@ColName = 'Yellow'
+
+-- SP to insert tblPOSITION 
+CREATE PROCEDURE sp_InsertPosition
+@Pos_Name VARCHAR(30),
+@P_Desc VARCHAR(255),
+@PT_Name VARCHAR (30)
+AS
+DECLARE @PosType_ID INT
+
+SET @PosType_ID = (select PositionTypeID from tblPOSITION_TYPE WHERE PositionTypeName = @PT_Name)
+
+BEGIN TRAN G1
+INSERT INTO tblPOSITION(PositionName, PositionDescr, PositionTypeID)
+VALUES(@Pos_Name, @P_Desc, @PosType_ID)
+​
+Commit TRAN G1
+
+Exec sp_InsertPosition
+@Pos_Name = 'Regional Manager',
+@P_Desc = 'Manager manages the Western region',
+@PT_Name = 'Full Time'
+
+Exec sp_InsertPosition
+@Pos_Name = 'Security Guard',
+@P_Desc = 'Keep our stores safe',
+@PT_Name = 'Full Time'
+
+Exec sp_InsertPosition
+@Pos_Name = 'Sales representative',
+@P_Desc = 'Sell our products to customers',
+@PT_Name = 'Full Time'
+
+Exec sp_InsertPosition
+@Pos_Name = 'Fashion Designer Lead',
+@P_Desc = 'Manage and design new products',
+@PT_Name = 'Full Time'
+
+Exec sp_InsertPosition
+@Pos_Name = 'Summer Intern',
+@P_Desc = 'Intern only can work during summer',
+@PT_Name = 'Season'
+
+Exec sp_InsertPosition
+@Pos_Name = 'Marketing Director',
+@P_Desc = 'Market our product',
+@PT_Name = 'Full Time'
+
+-- SP to get Customer ID
+Create PROCEDURE sp_GetCustomerID  
+ @Fname varchar(20),  
+ @Lname varchar(20),  
+ @CustID INT OUT  
+AS  
+BEGIN  
+SET @CustID = ( SELECT  Top 1 CustomerID FROM tblCUSTOMER   
+                WHERE CustomerFname = @Fname  
+                AND CustomerLname = @Lname)
+END  
+
+--SP to populate tblCustomer_Cart
+GO
+Create PROCEDURE sp_InsertCustCart 
+       @ProdName varchar(20),  
+        @Date DateTime,  
+        @CFname varchar(20),  
+        @CLname varchar(20),  
+       @Qty INT  
+AS  
+BEGIN  
+DECLARE @ProdID INT, @CustomerID INT 
+
+SET @ProdID = (SELECT ProductID FROM tblPRODUCT WHERE ProductName = @ProdName)  
+
+EXEC sp_GetCustomerID
+ @Fname = @CFname,
+ @Lname = @CLname,  
+ @CustID = @CustomerID OUT
+
+IF @CustomerID IS NULL
+    BEGIN
+        PRINT 'Some kind of problem going on with @CustomerID...Please check spelling';
+        THROW 56341, '@CustomerID cannot be NULL', 1;
+    END
+
+END  
+
+       INSERT INTO tblCUSTOMER_CART  (CustomerID, ProductID, Quantity, CartDate)  
+       VALUES (@CustomerID, @ProdID, @Qty, @Date)  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Rain jacket',  
+@Date = '2021-03-08',
+@Qty = 1,
+@CFname = 'Haile',  
+@CLname = 'barajas'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Ski Jacket',  
+@Date = '2021-03-08',
+@Qty = 10,
+@CFname = 'Haile',  
+@CLname = 'barajas'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Ski Jacket',  
+@Date = '2021-03-08',
+@Qty = 1,
+@CFname = 'Sara',  
+@CLname = 'Su'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Pineapple earrings',  
+@Date = '2021-03-08',
+@Qty = 5,
+@CFname = 'Sara',  
+@CLname = 'Su' 
+
+EXEC sp_InsertCustCart
+@ProdName = 'Rain Jacket',  
+@Date = '2021-03-08',
+@Qty = 3,
+@CFname = 'Sara',  
+@CLname = 'Su' 
+
+
+EXEC sp_InsertCustCart
+@ProdName = 'Pineapple earrings',  
+@Date = '2021-03-08',
+@Qty = 1,
+@CFname = 'Sam',  
+@CLname = 'Lam' 
+
+EXEC sp_InsertCustCart
+@ProdName = 'Ski Jacket',  
+@Date = '2021-03-08',
+@Qty = 3,
+@CFname = 'Sam',  
+@CLname = 'Lam'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Rain Jacket',  
+@Date = '2021-03-08',
+@Qty = 3,
+@CFname = 'Sam',  
+@CLname = 'Lam'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Rain Jacket',  
+@Date = '2021-03-07',
+@Qty = 2,
+@CFname = 'Lisa',  
+@CLname = 'Wong'  
+
+EXEC sp_InsertCustCart
+@ProdName = 'Ski Jacket',  
+@Date = '2021-03-07',
+@Qty = 1,
+@CFname = 'Lisa',  
+@CLname = 'Wong'  
+
+
+EXEC sp_InsertCustCart
+@ProdName = 'Ski Jacket',  
+@Date = '2021-03-07',
+@Qty = 1,
+@CFname = 'Cara',  
+@CLname = 'Priest' 
+
+----------------------------------------------
+--SP to populate tblOrder, tblOrder_Product 
+GO
+CREATE PROCEDURE sp_ProcessCustCart
+@CustFName varchar (20),
+@CustLName varchar (20) 
+AS  
+BEGIN  
+DECLARE @OrderID INT, @Customer_ID INT  
+  
+BEGIN TRANSACTION G1  
+PRINT 'Beginning TRAN G1; @@TRANCOUNT should equal 1'  
+PRINT @@TRANCOUNT  
+  
+BEGIN TRANSACTION G2  
+PRINT 'Beginning TRAN G2; @@TRANCOUNT should equal 2'  
+PRINT @@TRANCOUNT  
+  
+EXEC sp_GetCustomerID 
+ @Fname = @CustFName,  
+ @Lname = @CustLName,  
+ @CustID =  @Customer_ID OUT  
+
+INSERT INTO tblORDER ([CustomerID],[OrderDate])  
+VALUES (@Customer_ID, GetDate())  
+  
+SET @OrderID = (SELECT Scope_Identity())  
+  
+IF @OrderID IS NULL  
+ BEGIN  
+  PRINT 'Error in finding @orderID'  
+  RAISERROR ('@OrderID is NULL; terminating process', 11, 1)  
+  RETURN  
+ END  
+ELSE  
+
+INSERT INTO tblORDER_PRODUCT (OrderID, ProductID, Quantity)  
+SELECT @OrderID, ProductID, SUM(Quantity)  
+FROM tblCUSTOMER_CART  
+WHERE CustomerID = @Customer_ID  
+GROUP BY ProductID  
+  
+IF @@ERROR <> 0  
+       BEGIN  
+             ROLLBACK TRANSACTION G2  
+       END  
+ELSE  
+ BEGIN  
+ PRINT 'COMMITTING TRAN G2; @@TRANCOUNT should be 2 still'  
+PRINT @@TRANCOUNT  
+  
+        COMMIT TRANSACTION G2  
+PRINT 'Just COMMITTED TRAN G2; @@TRANCOUNT should be 1 now'  
+PRINT @@TRANCOUNT  
+  
+ END  
+  
+--DELETE rows from tblCART that have just been processed  
+-- conduct a count to make sure number of rows processed is equal to the number of rows to be deleted  
+  
+BEGIN TRANSACTION G3  
+PRINT 'Beginning TRAN G3 clean-up tblCART by deleting matching rows; @@TRANCOUNT should equal 2'  
+PRINT @@TRANCOUNT  
+  
+PRINT @@Rowcount  
+ DELETE   
+ FROM tblCUSTOMER_CART  
+ WHERE CustomerID = @Customer_ID
+  
+IF @@ERROR <> 0  
+       BEGIN  
+             ROLLBACK TRANSACTION G3  
+       END  
+ELSE  
+ BEGIN  
+ PRINT 'COMMITTING TRAN G3; @@TRANCOUNT should be 2 still'  
+PRINT @@TRANCOUNT  
+  
+       COMMIT TRANSACTION G3  
+PRINT 'Just COMMITTED TRAN G3; @@TRANCOUNT should be 1 now'  
+PRINT @@TRANCOUNT  
+  
+ END  
+  
+IF @@ERROR <> 0  
+       BEGIN  
+             ROLLBACK TRANSACTION G3  
+       END  
+  
+ELSE  
+ BEGIN  
+  PRINT 'COMMITTING TRAN G1; @@TRANCOUNT should be 1 and ready to close'  
+PRINT @@TRANCOUNT  
+IF @@TRANCOUNT <> 1  
+ BEGIN  
+             ROLLBACK TRANSACTION G1  
+PRINT '@@TRANCOUNT <> 1; whole transaction is rolling back'  
+       END  
+ELSE  
+       COMMIT TRANSACTION G1  
+PRINT 'Just COMMITTED TRAN G1; @@TRANCOUNT should be 0 now'  
+PRINT @@TRANCOUNT  
+  
+ END  
+  
+END  
+
+exec sp_ProcessCustCart
+@CustFName = 'Sara',
+@CustLName = 'Su'
+
+exec sp_ProcessCustCart
+@CustFName = 'Sam',
+@CustLName = 'Lam'
+
+exec sp_ProcessCustCart
+@CustFName = 'Haile',
+@CustLName = 'barajas'
+
+exec sp_ProcessCustCart
+@CustFName = 'March',
+@CustLName = 'Robb'
