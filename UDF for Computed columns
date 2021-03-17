@@ -1,0 +1,89 @@
+-- This file contains four user-defined functions (UDF) to calculate
+--(1) the average salary in each department
+--(2) the total amount in tblOrder
+--(3) the average tenure year of employees in each branch
+--(4) the total number of each product sold in tblProduct
+
+-- (1) A function to calculate the average salary in each department
+GO
+CREATE FUNCTION fn_AvgEmployeeSalaries(@PK INT)
+RETURNS NUMERIC (14,2)
+AS 
+BEGIN
+    DECLARE @RET NUMERIC (14,2) = (SELECT AVG(salaries) FROM tblJOB 
+    WHERE DepartmentID = @PK)
+
+RETURN @RET
+END 
+GO
+
+ALTER TABLE tblDEPARTMENT
+ADD AverageSalaries AS (dbo.fn_AvgEmployeeSalaries(DepartmentID))
+
+-- (2) A SQL Function to calculate the total amount of each order in tblOrder
+
+--First Function to calculate PriceExtd in tblORDER_PRODUCT
+GO
+CREATE FUNCTION fnCal_OrderProduct_PriceExtd (@OrderProductID INT)
+RETURNS NUMERIC (12,2)
+AS
+BEGIN
+DECLARE @RET NUMERIC (12,2) = 
+            (SELECT P.UnitPrice*OP.Quantity from tblPRODUCT P
+            JOIN tblORDER_PRODUCT OP ON P.ProductID = OP.ProductID
+            WHERE OP.OrderProductID = @OrderProductID)
+
+RETURN @RET
+END
+
+GO
+
+ALTER TABLE tblORDER_product
+add PriceExtd AS (dbo.fnCal_OrderProduct_PriceExtd(OrderProductID))
+
+----Second FUNCTION to calculate TotalAmount in tblOrder
+GO
+CREATE FUNCTION fnCal_Order_TotalAmount (@OrderID INT)
+RETURNS NUMERIC (12,2)
+AS 
+BEGIN
+DECLARE @RET NUMERIC (12,2) = (SELECT SUM(PriceExtd) FROM tblORDER_PRODUCT WHERE OrderID = @OrderID)
+
+RETURN @RET
+END
+
+go
+--Alter table tblORDER to add a new computed column named TotalAmount
+ALTER TABLE tblORDER
+add TotalAmount AS (dbo.fnCal_Order_TotalAmount(OrderID))
+
+-- (3) A SQL function to calculate the average tenure year of employees in each branch
+GO
+CREATE FUNCTION fn_AvgEmployeeTenureEachBranch(@PK INT)
+RETURNS int 
+AS
+BEGIN  
+    DECLARE @RET int = (select avg (DATEDIFF (Year, CONVERT(DATETIME, BeginDate), GETDATE())) as Avg_Tenure from tbljob
+        WHERE BranchID = @PK)
+RETURN @RET
+END
+GO
+
+ALTER TABLE tblBranches
+ADD AverageTenure AS (dbo.fn_AvgEmployeeTenureEachBranch(BranchID))
+
+-- (4) A function to calculate the total number of each product sold in tblProduct
+GO
+CREATE FUNCTION fnTot_Num_Sold (@ProductID INT)
+RETURNS INT
+AS
+BEGIN
+Declare @RET INT = 
+    (SELECT SUM(Quantity) From tblORDER_PRODUCT Where ProductID = @ProductID)
+
+RETURN @RET
+END 
+
+GO 
+ALTER TABLE tblPRODUCT 
+ADD TotalItemSold AS (dbo.fnTot_Num_Sold(ProductID))
